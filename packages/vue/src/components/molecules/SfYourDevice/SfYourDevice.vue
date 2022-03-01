@@ -49,17 +49,21 @@ export default {
     this.morphEl = this.$el.querySelector(".sf-your-device__morph");
 
     if (this.device === "detect") {
-      const isMobile = window.matchMedia(
-        "only screen and (max-width: 480px)"
-      ).matches;
-      const isTablet = window.matchMedia(
-        "only screen and (max-width: 768px)"
-      ).matches;
+      if (typeof window.matchMedia !== "undefined") {
+        const isMobile = window.matchMedia(
+          "only screen and (max-width: 480px)"
+        ).matches;
+        const isTablet = window.matchMedia(
+          "only screen and (max-width: 768px)"
+        ).matches;
 
-      if (isMobile) {
-        this.i = 0;
-      } else if (isTablet) {
-        this.i = 1;
+        if (isMobile) {
+          this.i = 0;
+        } else if (isTablet) {
+          this.i = 1;
+        } else {
+          this.i = 2;
+        }
       } else {
         this.i = 2;
       }
