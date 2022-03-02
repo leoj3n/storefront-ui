@@ -1,8 +1,8 @@
 <template>
-  <div class="sf-your-device">
-    <div class="sf-your-device__wrapper">
-      <div class="sf-your-device__morph" @click="clicked">
-        <div class="sf-your-device__screen">
+  <div class="sf-device">
+    <div class="sf-device__wrapper">
+      <div class="sf-device__morph" @click="clicked">
+        <div class="sf-device__screen">
           <slot />
         </div>
       </div>
@@ -14,7 +14,7 @@
 const devices = ["mobile", "tablet", "laptop", "detect"];
 
 export default {
-  name: "SfYourDevice",
+  name: "SfDevice",
   props: {
     device: {
       type: String,
@@ -23,11 +23,11 @@ export default {
         return devices.includes(propValue);
       },
     },
-    morphOnClick: {
+    switchOnClick: {
       type: Boolean,
       default: false,
     },
-    morphInterval: {
+    switchInterval: {
       type: Number,
       default: 0,
     },
@@ -38,15 +38,11 @@ export default {
       morphEl: null,
       intervalID: -1,
       devices: devices,
-      classes: [
-        "sf-your-device__mobile",
-        "sf-your-device__tablet",
-        "sf-your-device__laptop",
-      ],
+      classes: ["sf-device__mobile", "sf-device__tablet", "sf-device__laptop"],
     };
   },
   mounted() {
-    this.morphEl = this.$el.querySelector(".sf-your-device__morph");
+    this.morphEl = this.$el.querySelector(".sf-device__morph");
 
     if (this.device === "detect") {
       if (typeof window.matchMedia !== "undefined") {
@@ -73,19 +69,19 @@ export default {
 
     this.morphEl.classList.add(this.classes[this.i]);
 
-    if (this.morphInterval > 0 && !this.morphOnClick) {
+    if (this.switchInterval > 0 && !this.switchOnClick) {
       this.toggleMorph();
     }
   },
   methods: {
     clicked() {
-      this.morphOnClick && this.toggleMorph();
+      this.switchOnClick && this.toggleMorph();
     },
     toggleMorph() {
-      if (this.morphInterval > 0) {
+      if (this.switchInterval > 0) {
         if (this.intervalID === -1) {
           this.morph();
-          this.intervalID = setInterval(this.morph, this.morphInterval);
+          this.intervalID = setInterval(this.morph, this.switchInterval);
         } else {
           clearInterval(this.intervalID);
           this.intervalID = -1;
@@ -109,5 +105,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "~@storefront-ui/shared/styles/components/molecules/SfYourDevice.scss";
+@import "~@storefront-ui/shared/styles/components/molecules/SfDevice.scss";
 </style>
